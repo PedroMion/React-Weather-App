@@ -16,10 +16,10 @@ const Input = () => {
      );
 }
 
-const Button = () => {
+export const Button = (props) => {
     return (
         <div>
-            <button className="button">Pesquisar</button>
+            <button className="button">{props.text}</button>
         </div>
     );
 }
@@ -30,10 +30,10 @@ const SearchArea = () => {
             <InputText />;
             <div className="searchSquare" style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
                 <Input />;
-                <Button />;
+                <Button text="Pesquisar"/>;
             </div>
         </div>
     );
 }
- 
+
 export default SearchArea;
