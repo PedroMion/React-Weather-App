@@ -1,17 +1,19 @@
 import './SearchArea.css';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const InputText = () => {
+const InputText = (props) => {
     return (
         <div>
-            <p className="inputText">Procure por uma cidade:</p>
+            <p className="inputText">{props.text}</p>
         </div>
     );
 }
 
-const Input = () => {
+const Input = (props) => {
     return ( 
         <div>
-            <input placeholder="Pesquise aqui" className="input"></input>
+            <input placeholder={props.placeholder} className="input"></input>
         </div>
      );
 }
@@ -19,18 +21,21 @@ const Input = () => {
 export const Button = (props) => {
     return (
         <div>
-            <button className="button">{props.text}</button>
+            <button className="button" style={{width:props.width, heigth:props.heigth}}>
+                {props.text}
+                {props.img}
+            </button>
         </div>
     );
 }
 
-const SearchArea = () => {
+const SearchArea = (props) => {
     return (
-        <div className="searchArea">
-            <InputText />;
+        <div className="searchArea" style={{width:props.width}}>
+            <InputText text="Weather App" />;
             <div className="searchSquare" style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
-                <Input />;
-                <Button text="Pesquisar"/>;
+                <Input placeholder="Search here" />
+                <Button img={<FontAwesomeIcon icon={faSearch} />}/>
             </div>
         </div>
     );

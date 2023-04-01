@@ -1,4 +1,7 @@
+import './LocationArea.css';
 import {Button} from './SearchArea';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarker } from '@fortawesome/free-solid-svg-icons';
 
 const Text = (props) => {
     return ( 
@@ -8,11 +11,11 @@ const Text = (props) => {
     );
 }
 
-const LocationArea = () => {
+const LocationArea = (props) => {
     return (
-        <div>
-            <Text textContent="OU" fontSize="12"/>
-            <Button text="Ative sua localização"/>
+        <div className="locationArea" style={{width:props.width, heigth:props.heigth, marginTop:props.marginTop}}>
+            <Text textContent="OR" fontSize="25px"/>
+            <Button text="Give your location" img={<FontAwesomeIcon icon={faMapMarker} />} width="250px" />
         </div>
     );
 }

@@ -4,9 +4,11 @@ import './App.css';
 
 function App() {
   return (
-    <div>
-      <SearchArea />
-      <LocationArea />
+    <div className="container">
+      <div className="app">
+        <SearchArea />
+        <LocationArea />
+      </div>
     </div>
   );
 }

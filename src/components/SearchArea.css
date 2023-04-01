@@ -4,7 +4,7 @@
 }
 
 .input {
-    width: 800px; 
+    width: 450px; 
     height: 70px;
     border-radius: 50px;
     background-color: #F0F0F0;
@@ -13,11 +13,14 @@
 }
 
 .button {
-    width: 150px;
+    width: 120px;
     height: 70px;
     cursor: pointer;
     font-size: 25px;
     border-radius: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .searchSquare {
@@ -25,7 +28,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    width: 80%;
+    width: 100%;
 }
 
 .searchArea {
@@ -34,4 +37,5 @@
     align-items: center;
     justify-content: space-around;
     height: 320px;
+    width: 85%;
 }
