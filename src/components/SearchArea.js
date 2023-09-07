@@ -1,6 +1,8 @@
 import './SearchArea.css';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
 const InputText = (props) => {
     return (
@@ -13,7 +15,7 @@ const InputText = (props) => {
 const Input = (props) => {
     return ( 
         <div>
-            <input placeholder={props.placeholder} className="input"></input>
+            <input placeholder={props.placeholder} className="input" value={props.value} onChange={props.onChange}></input>
         </div>
      );
 }
@@ -21,7 +23,7 @@ const Input = (props) => {
 export const Button = (props) => {
     return (
         <div>
-            <button className="button" style={{width:props.width, heigth:props.heigth}}>
+            <button className="button" style={{width:props.width, heigth:props.heigth}} onClick={props.onClick} >
                 {props.text}
                 {props.img}
             </button>
@@ -30,12 +32,59 @@ export const Button = (props) => {
 }
 
 const SearchArea = (props) => {
+    const [inputText, setInputText] = useState('');
+    const [location, setLocation] = useState(null);
+    const [weatherData, setWeatherData] = useState(null);
+    const [locationData, setLocationData] = useState(null);
+
+    const handleInputChange = (event) => {
+        if(event && event.target) {
+            setInputText(event.target.value);
+        }
+    }
+
+    const readInput = () => {
+        setLocation(inputText);
+    }
+
+    useEffect(() => {
+        if(location) {
+            const url = `https://api.opencagedata.com/geocode/v1/json?q=${location}&key=ebec3fd015934dcfbf8c7c6b36d1d440`
+
+            axios.get(url)
+            .then(response => {
+                setLocationData(response.data);
+              })
+              .catch(error => {
+                console.error('Falha na solicitação', error);
+              });
+        }
+    }, [location]);
+
+    useEffect(() => {
+        if(locationData && locationData.results) {
+            const latitude = locationData.results[0].latitude;
+            const longitude = locationData.results[0].longitude;
+            const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=0c73b76aa216be62695530cbc9c6a6f8`;
+
+            axios.get(url)
+                .then(response => {
+                    setWeatherData(response.data);
+                })
+                .catch(error => {
+                    console.error('Falha na solicitação', error);
+                });
+        }
+    }, [locationData]);
+    
+    console.log(weatherData);
+
     return (
         <div className="searchArea" style={{width:props.width}}>
             <InputText text="Weather App" />;
             <div className="searchSquare" style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
-                <Input placeholder="Search here" />
-                <Button img={<FontAwesomeIcon icon={faSearch} />}/>
+                <Input placeholder="Search here" value={inputText} onChange={handleInputChange} />
+                <Button img={<FontAwesomeIcon icon={faSearch} />} onClick={readInput}/>
             </div>
         </div>
     );
