@@ -3,6 +3,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { openWeatherKey, openCageKey } from './keys';
 
 const InputText = (props) => {
     return (
@@ -49,7 +50,7 @@ const SearchArea = (props) => {
 
     useEffect(() => {
         if(location) {
-            const url = `https://api.opencagedata.com/geocode/v1/json?q=${location}&key=ebec3fd015934dcfbf8c7c6b36d1d440`
+            const url = `https://api.opencagedata.com/geocode/v1/json?q=${location}&key=${openCageKey}`
 
             axios.get(url)
             .then(response => {
@@ -63,9 +64,9 @@ const SearchArea = (props) => {
 
     useEffect(() => {
         if(locationData && locationData.results) {
-            const latitude = locationData.results[0].latitude;
-            const longitude = locationData.results[0].longitude;
-            const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=0c73b76aa216be62695530cbc9c6a6f8`;
+            const latitude = locationData.results[0].geometry.lat;
+            const longitude = locationData.results[0].geometry.lng;
+            const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${openWeatherKey}`;
 
             axios.get(url)
                 .then(response => {

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarker } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { openWeatherKey, openCageKey } from './keys';
 
 const Text = (props) => {
     return ( 
@@ -28,8 +29,8 @@ const LocationArea = (props) => {
 
   useEffect(() => {
     if (latitude && longitude) {
-      const weatherURL = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=0c73b76aa216be62695530cbc9c6a6f8`;
-      const locationURL = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=ebec3fd015934dcfbf8c7c6b36d1d440`;
+      const weatherURL = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${openWeatherKey}`;
+      const locationURL = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${openCageKey}`;
 
       axios.get(weatherURL)
         .then(response => {
