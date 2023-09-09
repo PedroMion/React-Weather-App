@@ -17,8 +17,6 @@ const Text = (props) => {
 const LocationArea = (props) => {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [weatherData, setWeatherData] = useState(null);
-  const [locationData, setLocationData] = useState(null);
 
   const handleGetWeather = () => {
     navigator.geolocation.getCurrentPosition(position => {
@@ -27,6 +25,7 @@ const LocationArea = (props) => {
     });
   }
 
+  
   useEffect(() => {
     if (latitude && longitude) {
       const weatherURL = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${openWeatherKey}`;
@@ -34,7 +33,7 @@ const LocationArea = (props) => {
 
       axios.get(weatherURL)
         .then(response => {
-          setWeatherData(response.data);
+          props.updateWeatherData(response.data);
         })
         .catch(error => {
           console.error('Falha na solicitação', error);
@@ -42,16 +41,13 @@ const LocationArea = (props) => {
 
       axios.get(locationURL)
         .then(response => {
-          setLocationData(response.data);
+          props.updateLocationData(response.data);
         })
         .catch(error => {
           console.error('Falha na solicitação', error);
         });
     }
   }, [latitude, longitude]);
-
-  console.log(weatherData);
-  console.log(locationData);
 
   return (
     <div className="locationArea" style={{width:props.width, heigth:props.heigth, marginTop:props.marginTop}}>

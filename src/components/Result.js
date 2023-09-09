@@ -1,5 +1,5 @@
 import './Result.css';
-import React from 'react';
+import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun } from '@fortawesome/free-solid-svg-icons';
 
@@ -26,17 +26,50 @@ const EmojiArea = (props) => {
 }
 
 const Result = (props) => {
+    const [temp, setTemp] = useState("");
+    const [tempmin, setTempmin] = useState("");
+    const [tempmax, setTempmax] = useState("");
+    const [city, setCity] = useState("");
+    const [country, setCountry] = useState("");
+    const [dataChanged, setDataChanged] = useState(false);
+
+    const getInformationFromAPI = () => {
+        setTemp(parseFloat((props.weatherData.main.temp - 273).toFixed(1)));
+        setTempmin(parseFloat((props.weatherData.main.temp_min - 273).toFixed(1)));
+        setTempmax(parseFloat((props.weatherData.main.temp_max - 273).toFixed(1)));
+        setCity(props.locationData.results[0].components.city);
+        setCountry(props.locationData.results[0].components.country);
+    }
+
+    const isComponentVisible = () => {
+        if(props.weatherData && props.locationData) {
+            if(props.locationData.results && !dataChanged) {
+                getInformationFromAPI();
+                document.getElementById("resultId").style.display = "flex";
+                setDataChanged(true)
+            } else {
+                if(dataChanged && props.locationData.results) {
+                    if(props.locationData.results[0].components.city != city) {
+                        getInformationFromAPI();
+                    }
+                }
+            }
+        }
+    }
+
+    isComponentVisible();
+
     return(
-        <div className="Result">
+        <div className="Result" id="resultId">
             <div className='resultContainer'>
                 <div className='resultSection'>
-                    <EmojiArea text="Temperature: " apiInfo="25.2" icon={faSun} style={{color: "#e5de15",}} />
-                    <TextArea text1="Min: " text2="Max: " apiInfo1="27.2" apiInfo2="21.6" />
+                    <EmojiArea text="Temperature: " apiInfo={temp} icon={faSun} style={{color: "#e5de15",}} />
+                    <TextArea text1="Min: " text2="Max: " apiInfo1={tempmin} apiInfo2={tempmax} />
                 </div>
             </div>
             <div className='resultContainer' id="locationInfo">
-                <TextArea text1="City: " text2="Country: " apiInfo1="Rio de Janeiro" apiInfo2="Brasil" />
-                <TextArea text1="Time: " apiInfo1="19:49" />
+                <TextArea text1="City: " text2="Country: " apiInfo1={city} apiInfo2={country} />
+                <TextArea text1="Time: " apiInfo1="--:--" />
             </div>
         </div>
     );

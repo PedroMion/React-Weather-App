@@ -35,7 +35,6 @@ export const Button = (props) => {
 const SearchArea = (props) => {
     const [inputText, setInputText] = useState('');
     const [location, setLocation] = useState(null);
-    const [weatherData, setWeatherData] = useState(null);
     const [locationData, setLocationData] = useState(null);
 
     const handleInputChange = (event) => {
@@ -55,6 +54,7 @@ const SearchArea = (props) => {
             axios.get(url)
             .then(response => {
                 setLocationData(response.data);
+                props.updateLocationData(response.data);
               })
               .catch(error => {
                 console.error('Falha na solicitação', error);
@@ -70,15 +70,13 @@ const SearchArea = (props) => {
 
             axios.get(url)
                 .then(response => {
-                    setWeatherData(response.data);
+                    props.updateWeatherData(response.data);
                 })
                 .catch(error => {
                     console.error('Falha na solicitação', error);
                 });
         }
     }, [locationData]);
-    
-    console.log(weatherData);
 
     return (
         <div className="searchArea" style={{width:props.width}}>
